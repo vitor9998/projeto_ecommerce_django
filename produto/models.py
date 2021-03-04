@@ -27,7 +27,7 @@ class Produto(models.Model):
         #return f'R$ {self.preco_marketing:.2f}'.replace('.', ',') #deixei comentado para exemplo de uso do filtro.
         return utils.formata_preco(self.preco_marketing)
     get_preco_formatado.short_description = 'Preço'
-    
+
     def get_preco_promocional_formatado(self):
         #return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.', ',')
         return utils.formata_preco(self.preco_marketing_promocional)
