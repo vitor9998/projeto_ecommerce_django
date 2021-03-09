@@ -12,7 +12,14 @@ class BasePerfil(View):
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
 
+        self.perfil = None
+
         if self.request.user.is_authenticated:
+            self.perfil = models.Perfil.objects.filter(
+                usuario=self.request.user
+                ).first()
+
+
             self.contexto = {
                 'userform': forms.UserForm(
                     data=self.request.POST or None,
@@ -33,6 +40,8 @@ class BasePerfil(View):
                     data=self.request.POST or None
                 )
             }
+        self.userform = self.contexto['userform']
+        self.perfilform = self.contexto['perfilform']
 
         self.renderizar = render(
             self.request, self.template_name, self.contexto)
@@ -42,13 +51,21 @@ class BasePerfil(View):
 
 class Criar(BasePerfil):
     def post(self, *args, **kwargs):
+        if not self.userform.is_valid() or not self.perfilform.is_valid():
+            print("INVÁLIDO")
+            return self.renderizar
+        print("VÁLIDO")
+
         return self.renderizar
+
 class Atualizar(View):
     def get(self, *args, **kwargs):
         return HttpResponse('Atualizar')
+
 class Login(View):
     def get(self, *args, **kwargs):
         return HttpResponse('Login')
+
 class Logout(View):
     def get(self, *args, **kwargs):
         return HttpResponse('Logout')

@@ -13,6 +13,7 @@
         <form method="POST" action="">
             {% csrf_token %} <!--Não esquecer desse token!-->
             {{ userform|crispy }}
+            {{ perfilform|crispy }}
 
             <div class="row">
                 <div class="col">
