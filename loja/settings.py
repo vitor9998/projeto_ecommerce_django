@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'loja.wsgi.application'
+WSP_APPLICATION = 'loja.wsgi.application'
 
 
 # Database

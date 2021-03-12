@@ -13,7 +13,7 @@ from . import forms
 class BasePerfil(View):
     template_name = 'perfil/criar.html'
 
-    def setup(self, *args, **kwargs):
+    def setup(self, *args, **kwargs): #essa classe é pra configurar as coisas que vamos precisar usar dentro da classe.
         super().setup(*args, **kwargs)
 
         self.carrinho = copy.deepcopy(self.request.session.get('carrinho', {}))
@@ -47,6 +47,7 @@ class BasePerfil(View):
                     data=self.request.POST or None
                 )
             }
+
         self.userform = self.contexto['userform']
         self.perfilform = self.contexto['perfilform']
 
