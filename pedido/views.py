@@ -10,25 +10,26 @@ from .models import Pedido, ItemPedido
 from utils import utils
 
 #método dispatch vai descobrir para onde a página deve ir.
-class DispatchLoginRequired(View):
+class DispatchLoginRequiredMixin(View):
     def dispatch(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect('perfil:criar')
 
         return super().dispatch(*args, **kwargs)
 
-
-class Pagar(DispatchLoginRequired, DetailView):
-    template_name = 'pedido/pagar.html'
-    model = Pedido
-    pk_url_kwarg = 'pk'
-    context_object_name = 'pedido'
-
     #pedido/pagar/10 -> não consigo acessar esse pedido se for de outro usuário.
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(usuario=self.request.user)
         return qs
+
+
+class Pagar(DispatchLoginRequiredMixin, DetailView):
+    template_name = 'pedido/pagar.html'
+    model = Pedido
+    pk_url_kwarg = 'pk'
+    context_object_name = 'pedido'
+
 
 
 class SalvarPedido(View):
@@ -135,6 +136,8 @@ class Detalhe(View):
     def get(self, *args, **kwargs):
         return HttpResponse('Detalhe')
 
-class Lista(View):
-    def get(self, *args, **kwargs):
-        return HttpResponse('Lista')
+class Lista(DispatchLoginRequiredMixin, ListView):
+    model = Pedido
+    context_object_name = 'pedidos'
+    template_name = 'pedido/lista.html'
+    paginate_by = 10
