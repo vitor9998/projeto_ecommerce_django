@@ -9,11 +9,26 @@ from .models import Pedido, ItemPedido
 
 from utils import utils
 
-class Pagar(DetailView):
+#método dispatch vai descobrir para onde a página deve ir.
+class DispatchLoginRequired(View):
+    def dispatch(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('perfil:criar')
+
+        return super().dispatch(*args, **kwargs)
+
+
+class Pagar(DispatchLoginRequired, DetailView):
     template_name = 'pedido/pagar.html'
     model = Pedido
     pk_url_kwarg = 'pk'
     context_object_name = 'pedido'
+
+    #pedido/pagar/10 -> não consigo acessar esse pedido se for de outro usuário.
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(usuario=self.request.user)
+        return qs
 
 
 class SalvarPedido(View):
