@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.shortcuts import render, redirect, reverse
+from django.views.generic import ListView, DetailView
 from django.views import View
 from django.http import HttpResponse
 from django.contrib import messages
@@ -9,9 +9,11 @@ from .models import Pedido, ItemPedido
 
 from utils import utils
 
-class Pagar(View):
-    def get(self, *args, **kwargs):
-        return HttpResponse('PAGAR')
+class Pagar(DetailView):
+    template_name = 'pedido/pagar.html'
+    model = Pedido
+    pk_url_kwarg = 'pk'
+    context_object_name = 'pedido'
 
 
 class SalvarPedido(View):
@@ -102,7 +104,15 @@ class SalvarPedido(View):
         )
 
         del self.request.session['carrinho']
-        return redirect('pedido:lista')
+
+        return redirect(
+            reverse(
+                'pedido:pagar',
+                kwargs={
+                    'pk': pedido.pk
+                }
+            )
+        )
 
 
 
