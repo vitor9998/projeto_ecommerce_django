@@ -96,11 +96,8 @@ class Pagar(View):
             ]
         )
 
-        contexto = {
-
-        }
-
-        return render(self.request, self.template_name, contexto)
+        del self.request.session['carrinho']
+        return redirect('pedido:lista')
 
 
 class SalvarPedido(View):
@@ -111,3 +108,7 @@ class SalvarPedido(View):
 class Detalhe(View):
     def get(self, *args, **kwargs):
         return HttpResponse('Detalhe')
+
+class Lista(View):
+    def get(self, *args, **kwargs):
+        return HttpResponse('Lista')
