@@ -13,7 +13,7 @@
             <div class="card">
 
                 {% if produto.imagem %}
-                <a href="{{ produto.slug }}"> <!--Quando clickar na imagem dos produtos é direcionado-->
+                <a href="{% url 'produto:detalhe' produto.slug %}"> <!--Quando clickar na imagem dos produtos é direcionado-->
                     <img class="card-img-top" src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
                 </a>
                 {% endif %}
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-transparent border-top-light-custom text-center">
-                    <a href="{{ produto.slug }}" class="btn btn-primary btn-sm m-1 btn-block"> <!--link do carrinho-->
+                    <a href="{% url 'produto:detalhe' produto.slug %}" class="btn btn-primary btn-sm m-1 btn-block"> <!--link do carrinho-->
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         Comprar
                     </a>
